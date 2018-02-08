@@ -1,7 +1,11 @@
 {
     "autoload": {
         "psr-4": {
-            "Unipago\\": ""
+            "Unipago\\": "src/"
         }
+    },
+    "require": {
+        "phpunit/phpunit": "^7.0",
+        "monolog/monolog": "^1.23"
     }
 }
