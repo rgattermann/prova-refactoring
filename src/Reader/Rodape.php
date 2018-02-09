@@ -2,19 +2,17 @@
 
 namespace Unipago\Reader;
 
-use InvalidArgumentException;
 use Unipago\Base\Log;
+use Unipago\Base\Line;
 use Unipago\Model\Rodape as RodapeModel;
 
-class Rodape implements Line
+class Rodape extends Line
 {
     private $line;
 
     public function __construct($line)
     {
-        if (empty($line)) {
-            throw new InvalidArgumentException('A linha do rodapé não pode ser vazia!');
-        }
+        $this->validateLine($line);
 
         $this->line = $line;
     }
@@ -32,5 +30,15 @@ class Rodape implements Line
         Log::debug('Informações do rodape:', [$rodape->toArray()]);
 
         return $rodape;
+    }
+
+    /**
+     * Retorna o identificador da classes
+     *
+     * @return string
+     */
+    public static function getIdentificador(): string
+    {
+        return 'RODAPE';
     }
 }

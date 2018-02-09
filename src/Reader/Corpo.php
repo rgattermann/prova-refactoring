@@ -2,19 +2,17 @@
 
 namespace Unipago\Reader;
 
-use InvalidArgumentException;
 use Unipago\Base\Log;
+use Unipago\Base\Line;
 use Unipago\Model\Corpo as CorpoModel;
 
-class Corpo implements Line
+class Corpo extends Line
 {
     private $line;
 
     public function __construct($line)
     {
-        if (empty($line)) {
-            throw new InvalidArgumentException('A linha do corpo não pode ser vazia!');
-        }
+        $this->validateLine($line);
 
         $this->line = $line;
     }
@@ -37,5 +35,15 @@ class Corpo implements Line
         Log::debug('Informações do corpo:', [$corpo->toArray()]);
 
         return $corpo;
+    }
+
+    /**
+     * Retorna o identificador da classes
+     *
+     * @return string
+     */
+    public static function getIdentificador(): string
+    {
+        return 'CORPO';
     }
 }

@@ -50,11 +50,11 @@ class File
             if (!empty($line)) {
                 $typeLine = IdentificadorLinha::identify($line);
 
-                if ($typeLine === 'CABECALHO') {
+                if ($typeLine === CabecalhoReader::getIdentificador()) {
                     $cabecalhoReader = new CabecalhoReader($line);
                     $arquivoRetorno->setCabecalho($cabecalhoReader->readLine());
                     continue;
-                } elseif ($typeLine === 'CORPO') {
+                } elseif ($typeLine === CorpoReader::getIdentificador()) {
                     $corpoReader = new CorpoReader($line);
                     $arquivoRetorno->addCorpo($corpoReader->readLine());
                     continue;
@@ -66,6 +66,7 @@ class File
                 Log::debug('Linha vazia identificada, leitura desta não realizada');
             }
         }
+        Log::info('Leitura do arquivo concluída');
 
         return $arquivoRetorno;
     }

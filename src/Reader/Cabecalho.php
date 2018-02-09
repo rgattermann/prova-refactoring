@@ -2,20 +2,17 @@
 
 namespace Unipago\Reader;
 
-use InvalidArgumentException;
 use Unipago\Model\Cabecalho as CabecalhoModel;
 use Unipago\Base\Log;
+use Unipago\Base\Line;
 
-class Cabecalho implements Line
+class Cabecalho extends Line
 {
     private $line;
 
     public function __construct($line)
     {
-        if (empty($line)) {
-            throw new InvalidArgumentException('A linha do cabeçalho não pode ser vazia!');
-        }
-
+        $this->validateLine($line);
         $this->line = $line;
     }
 
@@ -35,5 +32,15 @@ class Cabecalho implements Line
         Log::debug('Informações do cabecalho:', [$cabecalho->toArray()]);
 
         return $cabecalho;
+    }
+
+    /**
+     * Retorna o identificador da classes
+     *
+     * @return string
+     */
+    public static function getIdentificador(): string
+    {
+        return 'CABECALHO';
     }
 }
