@@ -9,7 +9,7 @@ class Rodape
     /**
      * Get the value of totalArquivo
      */
-    public function getTotalArquivo()
+    public function getTotalArquivo(): float
     {
         return $this->totalArquivo;
     }
@@ -19,7 +19,7 @@ class Rodape
      *
      * @return  self
      */
-    public function setTotalArquivo($totalArquivo)
+    public function setTotalArquivo(float $totalArquivo)
     {
         $this->totalArquivo = $totalArquivo;
 

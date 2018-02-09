@@ -14,7 +14,7 @@ class Corpo
     /**
      * Get the value of nossoNumero
      */
-    public function getNossoNumero()
+    public function getNossoNumero(): string
     {
         return $this->nossoNumero;
     }
@@ -24,7 +24,7 @@ class Corpo
      *
      * @return  self
      */
-    public function setNossoNumero($nossoNumero)
+    public function setNossoNumero(string $nossoNumero)
     {
         $this->nossoNumero = $nossoNumero;
 
@@ -34,7 +34,7 @@ class Corpo
     /**
      * Get the value of valorPago
      */
-    public function getValorPago()
+    public function getValorPago(): float
     {
         return $this->valorPago;
     }
@@ -44,7 +44,7 @@ class Corpo
      *
      * @return  self
      */
-    public function setValorPago($valorPago)
+    public function setValorPago(float $valorPago)
     {
         $this->valorPago = $valorPago;
 
@@ -54,7 +54,7 @@ class Corpo
     /**
      * Get the value of tarifa
      */
-    public function getTarifa()
+    public function getTarifa(): string
     {
         return $this->tarifa;
     }
@@ -64,7 +64,7 @@ class Corpo
      *
      * @return  self
      */
-    public function setTarifa($tarifa)
+    public function setTarifa(string $tarifa)
     {
         $this->tarifa = $tarifa;
 
@@ -74,7 +74,7 @@ class Corpo
     /**
      * Get the value of juros
      */
-    public function getJuros()
+    public function getJuros(): float
     {
         return $this->juros;
     }
@@ -84,7 +84,7 @@ class Corpo
      *
      * @return  self
      */
-    public function setJuros($juros)
+    public function setJuros(float $juros)
     {
         $this->juros = $juros;
 
@@ -94,7 +94,7 @@ class Corpo
     /**
      * Get the value of creditado
      */
-    public function getCreditado()
+    public function getCreditado(): float
     {
         return $this->creditado;
     }
@@ -104,7 +104,7 @@ class Corpo
      *
      * @return  self
      */
-    public function setCreditado($creditado)
+    public function setCreditado(float $creditado)
     {
         $this->creditado = $creditado;
 
@@ -114,7 +114,7 @@ class Corpo
     /**
      * Get the value of ocorrencia
      */
-    public function getOcorrencia()
+    public function getOcorrencia(): string
     {
         return $this->ocorrencia;
     }
@@ -124,19 +124,19 @@ class Corpo
      *
      * @return  self
      */
-    public function setOcorrencia($ocorrencia)
+    public function setOcorrencia(string $ocorrencia)
     {
         $this->ocorrencia = $ocorrencia;
 
         return $this;
     }
 
-    public function getTotalPago()
+    public function getTotalPago(): float
     {
         return $this->getValorPago() + $this->getJuros() - $this->getTarifa();
     }
 
-    public function validapagamento()
+    public function validapagamento(): bool
     {
         //if (number_format($creditado, 2) == number_format($valorPago + $juros - $tarifa, 2)) {
         return ($this->getCreditado() == $this->getTotalPago());

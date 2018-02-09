@@ -11,7 +11,7 @@ class Cabecalho
     /**
      * Get the value of empresa
      */
-    public function getEmpresa()
+    public function getEmpresa(): string
     {
         return $this->empresa;
     }
@@ -21,7 +21,7 @@ class Cabecalho
      *
      * @return  self
      */
-    public function setEmpresa($empresa)
+    public function setEmpresa(string $empresa)
     {
         $this->empresa = $empresa;
 
@@ -31,7 +31,7 @@ class Cabecalho
     /**
      * Get the value of banco
      */
-    public function getBanco()
+    public function getBanco(): string
     {
         return $this->banco;
     }
@@ -41,7 +41,7 @@ class Cabecalho
      *
      * @return  self
      */
-    public function setBanco($banco)
+    public function setBanco(string $banco)
     {
         $this->banco = $banco;
 
@@ -51,7 +51,7 @@ class Cabecalho
     /**
      * Get the value of data
      */
-    public function getData()
+    public function getData(): string
     {
         return $this->data;
     }
@@ -61,14 +61,19 @@ class Cabecalho
      *
      * @return  self
      */
-    public function setData($data)
+    public function setData(string $data)
     {
         $this->data = $data;
 
         return $this;
     }
 
-    public function getFormatedDate()
+    /**
+     * Retorna a data de importação do arquivo formatada
+     *
+     * @return  string
+     */
+    public function getFormatedDate(): string
     {
         $data = $this->getData();
         $formatedDate = '20' . substr($data, 4, 2) . '-' . substr($data, 2, 2)
@@ -76,6 +81,12 @@ class Cabecalho
 
         return $formatedDate;
     }
+
+    /**
+     * Retorna os atributos do objeto textualmente
+     *
+     * @return  self
+     */
 
     public function __toString()
     {
