@@ -131,6 +131,17 @@ class Corpo
         return $this;
     }
 
+    public function getTotalPago()
+    {
+        return $this->getValorPago() + $this->getJuros() - $this->getTarifa();
+    }
+
+    public function validapagamento()
+    {
+        //if (number_format($creditado, 2) == number_format($valorPago + $juros - $tarifa, 2)) {
+        return ($this->getCreditado() == $this->getTotalPago());
+    }
+
     public function __toString()
     {
         return '#' . $this->getNossoNumero() . PHP_EOL .
