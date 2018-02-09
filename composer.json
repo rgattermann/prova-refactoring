@@ -1,4 +1,6 @@
 {
+    "name": "rgattermann/prova-refactoring",
+    "type": "project",
     "autoload": {
         "psr-4": {
             "Unipago\\": "src/"
@@ -10,7 +12,9 @@
         }
     },
     "require": {
-        "phpunit/phpunit": "^7.0",
         "monolog/monolog": "^1.23"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
     }
 }
