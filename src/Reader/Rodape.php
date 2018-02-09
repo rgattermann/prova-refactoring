@@ -3,7 +3,8 @@
 namespace Unipago\Reader;
 
 use InvalidArgumentException;
-use \Unipago\Model\Rodape as RodapeModel;
+use Unipago\Base\Log;
+use Unipago\Model\Rodape as RodapeModel;
 
 class Rodape implements Line
 {
@@ -27,6 +28,8 @@ class Rodape implements Line
     {
         $rodape = new RodapeModel;
         $rodape->setTotalArquivo(substr($this->line, 220, 14) / 100);
+
+        Log::debug('Informações do rodape:', [$rodape->toArray()]);
 
         return $rodape;
     }

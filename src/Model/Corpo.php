@@ -183,4 +183,21 @@ class Corpo
                '#' . $this->getCreditado() . PHP_EOL .
                '#' . $this->getOcorrencia();
     }
+
+    /**
+     * Transforma o objeto em um array associativo
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'nossoNumero' => $this->getNossoNumero(),
+            'valorPago' => $this->getValorPago(),
+            'tarifa' => $this->getTarifa(),
+            'juros' => $this->getJuros(),
+            'creditado' => $this->getCreditado(),
+            'ocorrencia' => $this->getOcorrencia()
+        ];
+    }
 }

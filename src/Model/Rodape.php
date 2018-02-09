@@ -33,4 +33,16 @@ class Rodape
 
         return $this;
     }
+
+    /**
+     * Transforma o objeto em um array associativo
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'totalArquivo' => $this->getTotalArquivo()
+        ];
+    }
 }

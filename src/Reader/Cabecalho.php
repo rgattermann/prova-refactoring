@@ -28,9 +28,11 @@ class Cabecalho implements Line
     {
         Log::info('Lendo a linha do cabecalho');
         $cabecalho = new CabecalhoModel;
-        $cabecalho->setEmpresa(substr($this->line, 46, 30));
-        $cabecalho->setBanco(substr($this->line, 79, 15));
-        $cabecalho->setData(substr($this->line, 94, 6));
+        $cabecalho->setEmpresa(substr($this->line, 46, 30))
+                  ->setBanco(substr($this->line, 79, 15))
+                  ->setData(substr($this->line, 94, 6));
+
+        Log::debug('Informações do cabecalho:', [$cabecalho->toArray()]);
 
         return $cabecalho;
     }

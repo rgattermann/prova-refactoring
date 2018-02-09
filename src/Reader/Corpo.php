@@ -3,7 +3,8 @@
 namespace Unipago\Reader;
 
 use InvalidArgumentException;
-use \Unipago\Model\Corpo as CorpoModel;
+use Unipago\Base\Log;
+use Unipago\Model\Corpo as CorpoModel;
 
 class Corpo implements Line
 {
@@ -32,6 +33,8 @@ class Corpo implements Line
               ->setJuros((float) substr($this->line, 266, 13) / 100)
               ->setCreditado((float) substr($this->line, 253, 13) / 100)
               ->setOcorrencia(substr($this->line, 108, 2));
+
+        Log::debug('Informações do corpo:', [$corpo->toArray()]);
 
         return $corpo;
     }

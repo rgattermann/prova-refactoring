@@ -93,4 +93,18 @@ class Cabecalho
                '#' . $this->getBanco() . PHP_EOL .
                '#' . $this->getData();
     }
+
+    /**
+     * Transforma o objeto em um array associativo
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'empresa' => $this->getEmpresa(),
+            'banco' => $this->getBanco(),
+            'data' => $this->getData()
+        ];
+    }
 }
