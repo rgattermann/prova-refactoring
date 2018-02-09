@@ -154,7 +154,7 @@ class Corpo
      *
      * @return string
      */
-    public function getTotalPagoForated(): string
+    public function getTotalPagoFormated(): string
     {
         return number_format($this->getTotalPago(), 2);
     }
@@ -166,7 +166,7 @@ class Corpo
      */
     public function validaPagamento(): bool
     {
-        return ($this->getCreditadoFormated() == $this->getTotalPagoForated());
+        return ($this->getCreditadoFormated() == $this->getTotalPagoFormated());
     }
 
     /**
