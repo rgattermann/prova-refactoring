@@ -2,11 +2,12 @@
 
 namespace Unipago\Reader;
 
+use SplFileObject;
+use InvalidArgumentException;
 use Unipago\IdentificadorLinha;
 use Unipago\Reader\Cabecalho as CabecalhoReader;
 use Unipago\Reader\Corpo as CorpoReader;
-use SplFileObject;
-use InvalidArgumentException;
+use Unipago\Reader\Rodape as RodapeReader;
 
 class File
 {
@@ -25,32 +26,30 @@ class File
         $this->filename = $filename;
     }
 
-    private function getTotalLines(SplFileObject $file)
-    {
-        $file->seek(PHP_INT_MAX);
-        return $file->key() + 1;
-    }
-
     public function read()
     {
+        $arquivoRetorno = [];
         $file = new SplFileObject($this->filename, 'r');
-
-        // if ($this->getTotalLines($file) < 2) {
-        //     throw new InvalidArgumentException('Arquivo sem lançamentos');
-        // }
 
         while (!$file->eof()) {
             $line = trim($file->fgets());
 
-            $typeLine = IdentificadorLinha::identify($line);
+            if (!empty($line)) {
+                $typeLine = IdentificadorLinha::identify($line);
 
-            if ($typeLine == 'CABECALHO') {
-                $cabecalhoReader = new CabecalhoReader($line);
-                $cabecalho = $cabecalhoReader->readLine();
-            } elseif ($typeLine == 'CORPO') {
-                $corpoReader = new CorpoReader($line);
-                $corpoReader->readLine();
+                if ($typeLine === 'CABECALHO') {
+                    $cabecalhoReader = new CabecalhoReader($line);
+                    $arquivoRetorno['cabecalho'] = $cabecalhoReader->readLine();
+                } elseif ($typeLine === 'CORPO') {
+                    $corpoReader = new CorpoReader($line);
+                    $arquivoRetorno['corpo'][] = $corpoReader->readLine();
+                } else {
+                    $rodapeReader = new RodapeReader($line);
+                    $arquivoRetorno['rodape'] = $rodapeReader->readLine();
+                }
             }
         }
+
+        return $arquivoRetorno;
     }
 }

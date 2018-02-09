@@ -28,20 +28,6 @@ class Corpo
               ->setCreditado(substr($this->line, 253, 13) / 100)
               ->setOcorrencia(substr($this->line, 108, 2));
 
-        echo($corpo);
-        die;
-
-        $arrayOcorrencias = ['06', '09'];
-
-        if (in_array($ocorrencia, $arrayOcorrencias)) {
-            if (number_format($creditado, 2) == number_format($valorPago + $juros - $tarifa, 2)) {
-                echo "Pagamento do título $nosso_numero efetuado com sucesso \n";
-                ApiPagamentos::baixaTitulo($nosso_numero, $valorPago);
-            } else {
-                echo "Valor incorreto \n";
-            }
-        } else {
-            echo "Tipo de entrada não encontrado \n";
-        }
+        return $corpo;
     }
 }
