@@ -1,10 +1,17 @@
 <?php
 
-namespace Unipago;
+namespace Unipago\Base;
 
 class IdentificadorLinha
 {
-    public static function identify($line)
+    /**
+     * Realiza a identificação da linha do arquivo
+     * Retornado o identificador apropriado
+     *
+     * @param [string] $line
+     * @return integer
+     */
+    public static function identify(string $line): string
     {
         $firstCaractere = substr($line, 0, 1);
 

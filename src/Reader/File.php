@@ -4,7 +4,7 @@ namespace Unipago\Reader;
 
 use SplFileObject;
 use InvalidArgumentException;
-use Unipago\IdentificadorLinha;
+use Unipago\Base\IdentificadorLinha;
 use Unipago\Reader\Cabecalho as CabecalhoReader;
 use Unipago\Reader\Corpo as CorpoReader;
 use Unipago\Reader\Rodape as RodapeReader;
