@@ -15,6 +15,14 @@ class Rodape
     }
 
     /**
+     * Get the value of totalArquivo formated
+     */
+    public function getTotalArquivoFormated(): string
+    {
+        return number_format($this->getTotalArquivo(), 2);
+    }
+
+    /**
      * Set the value of totalArquivo
      *
      * @return  self

@@ -87,7 +87,6 @@ class Cabecalho
      *
      * @return  self
      */
-
     public function __toString()
     {
         return '#' . $this->getEmpresa() . PHP_EOL .

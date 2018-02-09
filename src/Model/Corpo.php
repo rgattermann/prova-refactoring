@@ -100,6 +100,14 @@ class Corpo
     }
 
     /**
+     * Get the value of creditado formated
+     */
+    public function getCreditadoFormated(): string
+    {
+        return number_format($this->getCreditado(), 2);
+    }
+
+    /**
      * Set the value of creditado
      *
      * @return  self
@@ -131,16 +139,41 @@ class Corpo
         return $this;
     }
 
+    /**
+     * Realiza o cálculo de tudo o que foi pago em um titulo
+     *
+     * @return float
+     */
     public function getTotalPago(): float
     {
         return $this->getValorPago() + $this->getJuros() - $this->getTarifa();
     }
 
-    public function validaPagamento(): bool
+    /**
+     * Realiza o cálculo de tudo o que foi pago em um titulo formatado
+     *
+     * @return string
+     */
+    public function getTotalPagoForated(): string
     {
-        return (number_format($this->getCreditado(), 2) == number_format($this->getTotalPago(), 2));
+        return number_format($this->getTotalPago(), 2);
     }
 
+    /**
+     * Realiza a validação do valor creditado em conta com o valot total pago em um título
+     *
+     * @return boolean
+     */
+    public function validaPagamento(): bool
+    {
+        return ($this->getCreditadoFormated() == $this->getTotalPagoForated());
+    }
+
+    /**
+     * Retorna os atributos do objeto textualmente
+     *
+     * @return  self
+     */
     public function __toString()
     {
         return '#' . $this->getNossoNumero() . PHP_EOL .

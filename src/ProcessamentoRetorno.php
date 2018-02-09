@@ -19,7 +19,7 @@ class ProcessamentoRetorno
     public function processar()
     {
         try {
-            Log::info('Realizando a leitura do arquivo: ' . $this->config->getLocalArquivo());
+            Log::info('Iniciando a leitura do arquivo: ' . $this->config->getLocalArquivo());
 
             $fileReader = new FileReader($this->config->getLocalArquivo());
             $arquivoRetorno = $fileReader->read();
@@ -43,21 +43,26 @@ class ProcessamentoRetorno
 
                         Log::info('Pagamento do título ' . $corpo->getNossoNumero() . ' efetuado com sucesso!');
                     } else {
-                        Log::error('Pagamento do título ' . $corpo->getNossoNumero() . ' não foi validado com sucesso!');
-                        //adicionar o valor creditado e o valor total pago no log
+                        Log::warning('Pagamento do título ' . $corpo->getNossoNumero() . ' não foi validado!');
+                        Log::debug('Informações do corpo:', $corpo);
                     }
                 } else {
-                    Log::error('Tipo de entrada não encontrada!');
+                    Log::warning('Tipo de entrada não encontrada no título ' . $corpo->getNossoNumero());
+                    Log::debug('Informações do corpo:', $corpo);
                 }
             }
 
-            if (number_format($totalTotalDoArquivo, 2) != number_format($arquivoRetorno->getRodape()->getTotalArquivo(), 2)) {
+            /**
+             * Validação de integridade do arquivo.
+             * Soma de todos os valores pagos com o valor presente no rodaé do arquivo
+             */
+            if (number_format($totalTotalDoArquivo, 2) != $arquivoRetorno->getRodape()->getTotalArquivoFormated()) {
                 throw new Exception('O arquivo possui inconsistências de valores!');
             }
 
             Log::info('Arquivo importado com sucesso!');
         } catch (Exception $e) {
-            Log::error($e->getMessage(), [$e]);
+            Log::error($e->getMessage());
         }
     }
 }
