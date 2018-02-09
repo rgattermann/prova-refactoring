@@ -3,9 +3,10 @@
 namespace Unipago\Reader;
 
 use InvalidArgumentException;
-use \Unipago\Model\Cabecalho as CabecalhoModel;
+use Unipago\Model\Cabecalho as CabecalhoModel;
+use Unipago\Base\Log;
 
-class Cabecalho
+class Cabecalho implements Line
 {
     private $line;
 
@@ -20,6 +21,7 @@ class Cabecalho
 
     public function readLine()
     {
+        Log::info('Lendo a linha do cabecalho');
         $cabecalho = new CabecalhoModel;
         $cabecalho->setEmpresa(substr($this->line, 46, 30));
         $cabecalho->setBanco(substr($this->line, 79, 15));

@@ -5,7 +5,7 @@ namespace Unipago\Reader;
 use InvalidArgumentException;
 use \Unipago\Model\Rodape as RodapeModel;
 
-class Rodape
+class Rodape implements Line
 {
     private $line;
 

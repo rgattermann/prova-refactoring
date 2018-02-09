@@ -5,7 +5,7 @@ namespace Unipago\Reader;
 use InvalidArgumentException;
 use \Unipago\Model\Corpo as CorpoModel;
 
-class Corpo
+class Corpo implements Line
 {
     private $line;
 
@@ -22,10 +22,10 @@ class Corpo
     {
         $corpo = new CorpoModel;
         $corpo->setNossoNumero(substr($this->line, 62, 8))
-              ->setValorPago(substr($this->line, 152, 13) / 100)
-              ->setTarifa(substr($this->line, 175, 13) / 100)
-              ->setJuros(substr($this->line, 266, 13) / 100)
-              ->setCreditado(substr($this->line, 253, 13) / 100)
+              ->setValorPago((float) substr($this->line, 152, 13) / 100)
+              ->setTarifa((float) substr($this->line, 175, 13) / 100)
+              ->setJuros((float) substr($this->line, 266, 13) / 100)
+              ->setCreditado((float) substr($this->line, 253, 13) / 100)
               ->setOcorrencia(substr($this->line, 108, 2));
 
         return $corpo;
