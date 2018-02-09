@@ -8,6 +8,7 @@ use Unipago\IdentificadorLinha;
 use Unipago\Reader\Cabecalho as CabecalhoReader;
 use Unipago\Reader\Corpo as CorpoReader;
 use Unipago\Reader\Rodape as RodapeReader;
+use Unipago\Model\ArquivoRetorno;
 
 class File
 {
@@ -26,9 +27,10 @@ class File
         $this->filename = $filename;
     }
 
-    public function read()
+    public function read(): ArquivoRetorno
     {
-        $arquivoRetorno = [];
+        $arquivoRetorno = new ArquivoRetorno;
+
         $file = new SplFileObject($this->filename, 'r');
 
         while (!$file->eof()) {
@@ -39,13 +41,15 @@ class File
 
                 if ($typeLine === 'CABECALHO') {
                     $cabecalhoReader = new CabecalhoReader($line);
-                    $arquivoRetorno['cabecalho'] = $cabecalhoReader->readLine();
+                    $arquivoRetorno->setCabecalho($cabecalhoReader->readLine());
+                    continue;
                 } elseif ($typeLine === 'CORPO') {
                     $corpoReader = new CorpoReader($line);
-                    $arquivoRetorno['corpo'][] = $corpoReader->readLine();
+                    $arquivoRetorno->addCorpo($corpoReader->readLine());
+                    continue;
                 } else {
                     $rodapeReader = new RodapeReader($line);
-                    $arquivoRetorno['rodape'] = $rodapeReader->readLine();
+                    $arquivoRetorno->setRodape($rodapeReader->readLine());
                 }
             }
         }

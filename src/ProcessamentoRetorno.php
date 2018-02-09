@@ -24,9 +24,9 @@ class ProcessamentoRetorno
             $fileReader = new FileReader($this->config->getLocalArquivo());
             $arquivoRetorno = $fileReader->read();
 
-            Log::info('Data do arquivo: ' . $arquivoRetorno['cabecalho']->getFormatedDate());
+            Log::info('Data do arquivo: ' . $arquivoRetorno->getCabecalho()->getFormatedDate());
 
-            if ($arquivoRetorno['cabecalho']->getEmpresa() != $this->config->getNomeEmpresa()) {
+            if ($arquivoRetorno->getCabecalho()->getEmpresa() != $this->config->getNomeEmpresa()) {
                 throw new Exception('Arquivo não é referente a empresa correta.');
             }
 
@@ -34,7 +34,7 @@ class ProcessamentoRetorno
 
             $totalTotalDoArquivo = 0;
 
-            foreach ($arquivoRetorno['corpo'] as $corpo) {
+            foreach ($arquivoRetorno->getCorpos() as $corpo) {
                 $totalTotalDoArquivo += $corpo->getValorPago();
 
                 if (in_array($corpo->getOcorrencia(), $this->config->getOcorrenciasValidas())) {
@@ -51,7 +51,7 @@ class ProcessamentoRetorno
                 }
             }
 
-            if (number_format($totalTotalDoArquivo, 2) != number_format($arquivoRetorno['rodape']->getTotalArquivo(), 2)) {
+            if (number_format($totalTotalDoArquivo, 2) != number_format($arquivoRetorno->getRodape()->getTotalArquivo(), 2)) {
                 throw new Exception('O arquivo possui inconsistências de valores!');
             }
 
