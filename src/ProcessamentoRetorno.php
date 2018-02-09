@@ -2,12 +2,15 @@
 
 namespace Unipago;
 
+use Unipago\Reader\File as FileReader;
 use Monolog\Logger;
+use Exception;
 
 class ProcessamentoRetorno
 {
     protected $logger;
     protected $config;
+    protected $ocorrenciasValidas = ['06', '09'];
 
     public function __construct(Config $config)
     {
@@ -18,84 +21,46 @@ class ProcessamentoRetorno
 
     public function processar()
     {
-        $this->logger->info('Realizando a leitura do arquivo: ' . $this->config->getLocalArquivo());
+        try {
+            $this->logger->info('Realizando a leitura do arquivo: ' . $this->config->getLocalArquivo());
 
-        $fileReader = new FileReader($this->config->getLocalArquivo());
-        $fileReader->read();
+            $fileReader = new FileReader($this->config->getLocalArquivo());
+            $arquivoRetorno = $fileReader->read();
 
-        die;
+            $this->logger->info('Data do arquivo: ' . $arquivoRetorno['cabecalho']->getFormatedDate());
 
-        $this->conteudoArquivo = file_get_contents($config->getLocalArquivo());
-        $todoArquivo = explode(PHP_EOL, $this->conteudoArquivo);
+            if ($arquivoRetorno['cabecalho']->getEmpresa() != $this->config->getNomeEmpresa()) {
+                throw new Exception('Arquivo não é referente a empresa correta.');
+            }
 
-        for ($i = 0; $i < count($todoArquivo); $i++) {
-            if ($i == '0') {
-                $tipo_linha = 'cabecalho';
-            } else {
-                if (substr($todoArquivo[$i], 0, 1) == '1') {
-                    $tipo_linha = 'corpo';
+            $this->logger->info('Arquivo válido, continuando com o processamento.');
+
+            $totalTotalDoArquivo = 0;
+
+            foreach ($arquivoRetorno['corpo'] as $corpo) {
+                $totalTotalDoArquivo += $corpo->getValorPago();
+
+                if (in_array($corpo->getOcorrencia(), $this->ocorrenciasValidas)) {
+                    if ($corpo->validaPagamento()) {
+                        ApiPagamentos::baixaTitulo($corpo->getNossoNumero(), $corpo->getValorPago());
+
+                        $this->logger->info('Pagamento do título ' . $corpo->getNossoNumero() . ' efetuado com sucesso!');
+                    } else {
+                        $this->logger->error('Pagamento do título ' . $corpo->getNossoNumero() . ' não foi validado com sucesso!');
+                        //adicionar o valor creditado e o valor total pago no log
+                    }
                 } else {
-                    $tipo_linha = 'rodape';
+                    $this->logger->error('Tipo de entrada não encontrada!');
                 }
             }
 
-            switch ($tipo_linha) {
-                case 'cabecalho':
-                    $empresa = substr($todoArquivo[$i], 46, 30);
-                    $banco = substr($todoArquivo[$i], 79, 15);
-                    $data = substr($todoArquivo[$i], 94, 6);
-
-                    $dia = substr($data, 0, 2);
-                    $mes = substr($data, 2, 2);
-                    $ano = '20' . substr($data, 4, 2);
-                    var_dump($ano . '-' . $mes . '-' . $dia);
-
-                    if (trim($empresa) == $this->config->nomeEmpresa()) {
-                        $this->logger->info('Arquivo válido, continuando com o processamento.');
-                    } else {
-                        throw new \Exception('Arquivo não é referente a empresa correta.');
-                    }
-                    break;
-
-                case 'corpo':
-                    $nosso_numero = substr($todoArquivo[$i], 62, 8);
-                    $valorPago = substr($todoArquivo[$i], 152, 13) / 100;
-                    $tarifa = substr($todoArquivo[$i], 175, 13) / 100;
-                    $juros = substr($todoArquivo[$i], 266, 13) / 100;
-                    $creditado = substr($todoArquivo[$i], 253, 13) / 100;
-                    $ocorrencia = substr($todoArquivo[$i], 108, 2);
-
-                    $arrayOcorrencias = ['06', '09'];
-
-                    if (in_array($ocorrencia, $arrayOcorrencias)) {
-                        if (number_format($creditado, 2) == number_format($valorPago + $juros - $tarifa, 2)) {
-                            echo "Pagamento do título $nosso_numero efetuado com sucesso \n";
-                            ApiPagamentos::baixaTitulo($nosso_numero, $valorPago);
-                        } else {
-                            echo "Valor incorreto \n";
-                        }
-                    } else {
-                        echo "Tipo de entrada não encontrado \n";
-                    }
-
-                    break;
-
-                default:
-                    $valorTotal = substr($todoArquivo[$i], 220, 14) / 100;
-
-                    $totalDoArquivo = 0;
-                    for ($i = 0; $i < count($todoArquivo); $i++) {
-                        $totalDoArquivo += substr($todoArquivo[$i], 152, 13) / 100;
-                    }
-
-                    if (number_format($valorTotal, 2) != number_format($totalDoArquivo, 2)) {
-                        throw new \Exception('Arquivo inconsistente');
-                    } else {
-                        echo "arquivo importado com sucesso \n";
-                    }
-
-                    break;
+            if ($totalTotalDoArquivo != $arquivoRetorno['rodape']->getTotalArquivo()) {
+                throw new Exception('O arquivo possui inconsistências de valores!');
             }
+
+            $this->logger->info('Arquivo importado com sucesso!');
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
         }
     }
 }
