@@ -54,7 +54,7 @@ class Corpo
     /**
      * Get the value of tarifa
      */
-    public function getTarifa(): string
+    public function getTarifa(): float
     {
         return $this->tarifa;
     }
@@ -64,7 +64,7 @@ class Corpo
      *
      * @return  self
      */
-    public function setTarifa(string $tarifa)
+    public function setTarifa(float $tarifa)
     {
         $this->tarifa = $tarifa;
 
@@ -138,7 +138,6 @@ class Corpo
 
     public function validapagamento(): bool
     {
-        //if (number_format($creditado, 2) == number_format($valorPago + $juros - $tarifa, 2)) {
         return ($this->getCreditado() == $this->getTotalPago());
     }
 
