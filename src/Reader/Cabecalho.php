@@ -19,7 +19,12 @@ class Cabecalho implements Line
         $this->line = $line;
     }
 
-    public function readLine()
+    /**
+     * Traduz uma linha para um objeto do tipo Cabecalho
+     *
+     * @return CabecalhoModel
+     */
+    public function readLine(): CabecalhoModel
     {
         Log::info('Lendo a linha do cabecalho');
         $cabecalho = new CabecalhoModel;

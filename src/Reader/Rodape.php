@@ -18,7 +18,12 @@ class Rodape implements Line
         $this->line = $line;
     }
 
-    public function readLine()
+    /**
+     * Traduz uma linha para um objeto do tipo Rodapé
+     *
+     * @return RodapeModel
+     */
+    public function readLine(): RodapeModel
     {
         $rodape = new RodapeModel;
         $rodape->setTotalArquivo(substr($this->line, 220, 14) / 100);

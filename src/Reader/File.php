@@ -27,6 +27,11 @@ class File
         $this->filename = $filename;
     }
 
+    /**
+     * Realiza a tradução de um arquivo texto para objetos
+     *
+     * @return ArquivoRetorno
+     */
     public function read(): ArquivoRetorno
     {
         $arquivoRetorno = new ArquivoRetorno;

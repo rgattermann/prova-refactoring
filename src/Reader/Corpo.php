@@ -18,7 +18,12 @@ class Corpo implements Line
         $this->line = $line;
     }
 
-    public function readLine()
+    /**
+     * Traduz uma linha para um objeto do tipo Corpo
+     *
+     * @return CorpoModel
+     */
+    public function readLine(): CorpoModel
     {
         $corpo = new CorpoModel;
         $corpo->setNossoNumero(substr($this->line, 62, 8))
