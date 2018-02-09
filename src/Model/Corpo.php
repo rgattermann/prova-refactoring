@@ -136,9 +136,9 @@ class Corpo
         return $this->getValorPago() + $this->getJuros() - $this->getTarifa();
     }
 
-    public function validapagamento(): bool
+    public function validaPagamento(): bool
     {
-        return ($this->getCreditado() == $this->getTotalPago());
+        return (number_format($this->getCreditado(), 2) == number_format($this->getTotalPago(), 2));
     }
 
     public function __toString()
