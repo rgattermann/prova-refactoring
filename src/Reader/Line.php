@@ -1,8 +1,9 @@
 <?php
 
-namespace Unipago\Base;
+namespace Unipago\Reader;
 
 use InvalidArgumentException;
+use Unipago\Base\IdentificadorLinha;
 
 class Line implements LineInterface
 {

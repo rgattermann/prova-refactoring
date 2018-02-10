@@ -4,7 +4,6 @@ namespace Unipago\Reader;
 
 use Unipago\Model\Cabecalho as CabecalhoModel;
 use Unipago\Base\Log;
-use Unipago\Base\Line;
 
 class Cabecalho extends Line
 {

@@ -3,7 +3,6 @@
 namespace Unipago\Reader;
 
 use Unipago\Base\Log;
-use Unipago\Base\Line;
 use Unipago\Model\Corpo as CorpoModel;
 
 class Corpo extends Line

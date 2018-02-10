@@ -19,9 +19,9 @@ class ProcessamentoRetorno
     public function processar()
     {
         try {
-            Log::info('Iniciando a leitura do arquivo: ' . $this->config->getLocalArquivo());
+            Log::info('Iniciando a leitura do arquivo: ' . $this->config->getFullPathFile());
 
-            $fileReader = new FileReader($this->config->getLocalArquivo());
+            $fileReader = new FileReader($this->config->getFullPathFile());
             $arquivoRetorno = $fileReader->read();
 
             Log::info('Data do arquivo: ' . $arquivoRetorno->getCabecalho()->getFormatedDate());

@@ -1,6 +1,6 @@
 <?php
 
-namespace Unipago\Base;
+namespace Unipago\Reader;
 
 interface LineInterface
 {
