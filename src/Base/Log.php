@@ -1,13 +1,14 @@
 <?php
+
 namespace Unipago\Base;
 
-use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class Log
 {
     protected static $instance;
-    
+
     /**
      * Retorna uma instancia do Monolog
      *
@@ -15,7 +16,7 @@ class Log
      */
     public static function getLogger(): ? Logger
     {
-        if (! self::$instance) {
+        if (!self::$instance) {
             self::configureInstance();
         }
         return self::$instance;
@@ -29,6 +30,10 @@ class Log
     protected static function configureInstance()
     {
         $logger = new Logger('ProcessamentoRetorno');
+        $logger->pushHandler(
+            new StreamHandler('php://stdout', \Monolog\Logger::INFO)
+        );
+
         self::$instance = $logger;
     }
 
